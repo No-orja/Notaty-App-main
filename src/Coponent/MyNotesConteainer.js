@@ -81,6 +81,7 @@ export default function MyNotesContainer({title, content, completed, id}) {
         try {
             await dispatch(completedNoteThunk(id));
             dispatch(getAllNoteThunk());
+            setIsCompleted(!isCompleted);
         } catch (error) {
             console.log("Error updating note:", error);
         }
