@@ -6,9 +6,10 @@ import MuiAlert from '@mui/material/Alert';
 import { useState } from "react";
 import Box from '@mui/material/Box';
 import { useDispatch } from "react-redux";
-import { deleteToDoesThunk, getAllTodoesThunk, updateToDoesThunk } from "../Api/ToDoes/ToDoesThunk";
+import { deleteToDoesThunk, getAllTodoesThunk, updateToDoesThunk , toggleCompletedToDoesThunk} from "../Api/ToDoes/ToDoesThunk";
 
 export default function MyToDoesContainer({task, completed, id}) {
+
     const dispatch = useDispatch();
 
     const [openEdit, setOpenEdit] = useState(false);
@@ -76,14 +77,17 @@ export default function MyToDoesContainer({task, completed, id}) {
     const handleCompleteToDo = ()=>{
         handleCloseEdit();
         setIsCompleted(!isCompleted);
+        dispatch(toggleCompletedToDoesThunk(id));
     }
+
+    console.log("isCompleted", isCompleted);
+    console.log("task", task);
 
     const style = {
         position: 'absolute',
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
-        width: 400,
         bgcolor: 'background.paper',
         border: '2px solid #D32F2F',
         boxShadow: 24,
@@ -93,8 +97,16 @@ export default function MyToDoesContainer({task, completed, id}) {
         alignItems: "center",
         justifyContent: "center",
         borderRadius: "10px",
-        gap: "20px"
-    };
+        gap: "20px",
+      
+        // ——— التعديل هنا ———
+        width: {
+          xs: '90vw',   // على الموبايل العرض رح يكون 90% من عرض الشاشة
+          sm: 400       // من حجم sm وطالع (≥600px) العرض ثابت 400px
+        },
+        maxWidth: '95vw'  // تأكد إنّه ما يتجاوز 95% من عرض الشاشة حتى على الشاشات الضخمة
+      };
+      
 
     return (
         <div className="NoteContainer">
@@ -105,6 +117,7 @@ export default function MyToDoesContainer({task, completed, id}) {
                 open={openEdit}
                 onClose={handleCloseEdit}
                 closeAfterTransition
+
               >
                 <Box sx={style} >
                     <Typography id="spring-modal-title" variant="h6" component="h2" style={{ fontWeight:"bold"}}>
@@ -171,7 +184,7 @@ export default function MyToDoesContainer({task, completed, id}) {
                 alignItems="center"
                 justifyContent="center"
             >
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={6}>
                     <Typography 
                         variant="h6" 
                         gutterBottom
@@ -184,7 +197,7 @@ export default function MyToDoesContainer({task, completed, id}) {
                 {/* أيقونات التحكم */}
                 <Grid 
                     item 
-                    xs={6} 
+                    xs={12} sm={6} 
                     sx={{ display: "flex", justifyContent: "center", gap: "10px" }}
                 >
                     <IconButton color="success" onClick={handleCompleteToDo}>

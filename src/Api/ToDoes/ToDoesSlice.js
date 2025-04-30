@@ -1,7 +1,8 @@
 import { 
     getAllTodoesThunk,
     addTodoThunk,
-    updateToDoesThunk, 
+    updateToDoesThunk,
+    toggleCompletedToDoesThunk, 
     deleteToDoesThunk 
 } from "./ToDoesThunk";
 
@@ -20,6 +21,9 @@ const initialState = {
     
     updateToDoesStatus: "idle", 
     updateToDoesError: null,
+
+    toggleCompletedToDoesStatus: "idle", 
+    toggleCompletedToDoesError: null,
     
     deleteToDoesStatus: "idle", 
     deleteToDoesError: null,
@@ -76,6 +80,23 @@ const toDoesSlice = createSlice({
             .addCase(updateToDoesThunk.rejected, (state, action) => {
                 state.updateToDoesStatus = "failed";
                 state.updateToDoesError = action.payload || action.error.message;
+            })
+
+            // Toggle Completed Todo
+            .addCase(toggleCompletedToDoesThunk.pending, (state) => {
+                state.toggleCompletedToDoesStatus = "loading";
+                state.toggleCompletedToDoesError = null;
+            })
+            .addCase(toggleCompletedToDoesThunk.fulfilled, (state, action) => {
+                state.toggleCompletedToDoesStatus = "succeeded";
+                const updatedTodo = action.payload;
+                state.todos = state.todos.map((todo) =>
+                    todo._id === updatedTodo._id ? { ...todo, ...updatedTodo } : todo
+                );
+            })
+            .addCase(toggleCompletedToDoesThunk.rejected, (state, action) => {
+                state.toggleCompletedToDoesStatus = "failed";
+                state.toggleCompletedToDoesError = action.payload || action.error.message;
             })
 
             // Delete Todo

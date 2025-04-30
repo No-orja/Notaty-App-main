@@ -3,60 +3,77 @@ import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import { motion } from "framer-motion";
 import "@fontsource/roboto";
-import "@fontsource/montserrat"; // لتحميل الخط
-import "@fontsource/montserrat/900.css";  // لتحميل الوزن ExtraBold
+import "@fontsource/montserrat";
+import "@fontsource/montserrat/900.css";
 import { Link } from "react-router-dom";
+
+import { IconButton, Menu, MenuItem } from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
 
 const logoText = "NoteFlow";
 
 const letterVariants = {
-    hidden: { opacity: 0, y: 30, rotate: -10 }, // تبدأ الحروف مخفية وصغيرة وتدور
-    visible: (i) => ({
-      opacity: 1,
-      y: 0,
-      rotate: 0,
-      transition: {
-        duration: 0.6,
-        delay: i * 0.1, // تأخير تدريجي لكل حرف
-        ease: "easeOut",
-      },
-    }),
-  };
+  hidden: { opacity: 0, y: 30, rotate: -10 },
+  visible: (i) => ({
+    opacity: 1,
+    y: 0,
+    rotate: 0,
+    transition: {
+      duration: 0.6,
+      delay: i * 0.1,
+      ease: "easeOut",
+    },
+  }),
+};
 
 export default function NavBar() {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const isMenuOpen = Boolean(anchorEl);
+
+  const handleMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
     <Container maxWidth="lg">
       <Grid container spacing={2} alignItems="center">
         <Grid item xs={8}>
-          
-            <motion.div
-                initial="hidden"
-                animate="visible"
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "5px",
+              fontSize: isMobile ? "2rem" : "3rem",
+              fontWeight: "900",
+              fontFamily: "'Montserrat', sans-serif",
+            }}
+          >
+            {logoText.split("").map((letter, index) => (
+              <motion.span
+                key={index}
+                custom={index}
+                variants={letterVariants}
                 style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "5px",
-                    fontSize: "3rem",  // حجم الخط الكبير
-                    fontWeight: "900",  // جعل الخط عريض
-                    fontFamily: "'Montserrat', sans-serif",  // الخط الذي تم تثبيته
+                  color: index === 0 || index === 4 ? "#D32F2F" : "rgb(0, 0, 0)",
+                  textShadow: "2px 2px 5px rgba(0, 0, 0, 0.1)",
+                  fontSize: index === 5 ? "3.5rem" : "3rem",
                 }}
-                >
-                {logoText.split("").map((letter, index) => (
-                    <motion.span
-                    key={index}
-                    custom={index}
-                    variants={letterVariants}
-                    style={{
-                        color: index === 0 || index === 4 ? "#D32F2F" : "#rgb(0, 0, 0)", // تغيير لون "X" إلى الأحمر
-                        textShadow: "2px 2px 5px rgba(0, 0, 0, 0.1)", // إضافة ظل خفيف حول الحروف
-                        fontSize: index === 5 ? "3.5rem" : "3rem", // تغيير حجم "X" لجعله أكبر
-                    }}
-                    >
-                    {letter}
-                    </motion.span>
-                ))}
-            </motion.div>
-            
+              >
+                {letter}
+              </motion.span>
+            ))}
+          </motion.div>
         </Grid>
 
         <Grid
@@ -64,61 +81,99 @@ export default function NavBar() {
           xs={4}
           sx={{
             display: "flex",
-            justifyContent: "space-around",
+            justifyContent: "flex-end",
             alignItems: "center",
-            fontSize: "1.2rem",
-            fontWeight: "bold",
-            fontFamily: "'Roboto', sans-serif",
           }}
         >
-          <Link to={`/`} style={{ textDecoration: "none" }}>
-            <motion.h3 
-                initial={{ opacity: 0, scale: 0.8 }}  // التأثير عند التحميل
-                animate={{ opacity: 1, scale: 1 }}   // التأثير بعد التحميل
-                transition={{ duration: 0.5 }}   // وقت التحميل
-                whileHover={{
-                  scale: 1.1,   // التكبير عند التحويم
-                  color: "black",  // تغيير اللون إلى الأزرق
-                  transition: { duration: 0.3 } // تأثير سلس عند التحويم
+          {isMobile ? (
+            <>
+              <IconButton onClick={handleMenuOpen} sx={{ color: "#D32F2F" }}>
+                <MenuIcon fontSize="large" />
+              </IconButton>
+
+              <Menu
+                anchorEl={anchorEl}
+                open={isMenuOpen}
+                onClose={handleMenuClose}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "right",
                 }}
-                style={{ cursor: "pointer", color: "#D32F2F" }}  // التأكد من أن الرابط قابل للتحويم
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
               >
-
-                Home
-              </motion.h3>          
-          </Link>
-
-          <Link to={`/mynotes`} style={{ textDecoration: "none", color: "inherit" }}>
-            <motion.h3
-              initial={{ opacity: 0, scale: 0.8 }}  // التأثير عند التحميل
-              animate={{ opacity: 1, scale: 1 }}   // التأثير بعد التحميل
-              transition={{ duration: 0.5 }}   // وقت التحميل
-              whileHover={{
-                scale: 1.1,   // التكبير عند التحويم
-                color: "#D32F2F",  // تغيير اللون إلى الأزرق
-                transition: { duration: 0.3 } // تأثير سلس عند التحويم
+                <MenuItem onClick={handleMenuClose} component={Link} to="/">
+                  Home
+                </MenuItem>
+                <MenuItem onClick={handleMenuClose} component={Link} to="/mynotes">
+                  MyNote
+                </MenuItem>
+                <MenuItem onClick={handleMenuClose} component={Link} to="/mytodos">
+                  MyToDo
+                </MenuItem>
+              </Menu>
+            </>
+          ) : (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-around",
+                alignItems: "center",
+                fontSize: "1.2rem",
+                fontWeight: "bold",
+                fontFamily: "'Roboto', sans-serif",
+                width: "100%",
               }}
-              style={{ cursor: "pointer", color: "black" }}  // التأكد من أن الرابط قابل للتحويم
             >
-              MyNote
-            </motion.h3>
-          </Link>
-          
-          <Link to={`/mytodos`} style={{ textDecoration: "none", color: "inherit" }}>
-            <motion.h3
-              initial={{ opacity: 0, scale: 0.8 }}  // التأثير عند التحميل
-              animate={{ opacity: 1, scale: 1 }}   // التأثير بعد التحميل
-              transition={{ duration: 0.5 }}   // وقت التحميل
-              whileHover={{
-                scale: 1.1,   // التكبير عند التحويم
-                color: "#D32F2F",  // تغيير اللون إلى الأزرق
-                transition: { duration: 0.3 } // تأثير سلس عند التحويم
-              }}
-              style={{ cursor: "pointer", color: "black" }}  // التأكد من أن الرابط قابل للتحويم
-            >
-              MyToDo
-            </motion.h3>
-          </Link>
+              <Link to={`/`} style={{ textDecoration: "none" }}>
+                <motion.h3
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5 }}
+                  whileHover={{
+                    scale: 1.1,
+                    color: "black",
+                    transition: { duration: 0.3 },
+                  }}
+                  style={{ cursor: "pointer", color: "#D32F2F" }}
+                >
+                  Home
+                </motion.h3>
+              </Link>
+              <Link to={`/mynotes`} style={{ textDecoration: "none", color: "inherit" }}>
+                <motion.h3
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5 }}
+                  whileHover={{
+                    scale: 1.1,
+                    color: "#D32F2F",
+                    transition: { duration: 0.3 },
+                  }}
+                  style={{ cursor: "pointer", color: "black" }}
+                >
+                  MyNote
+                </motion.h3>
+              </Link>
+              <Link to={`/mytodos`} style={{ textDecoration: "none", color: "inherit" }}>
+                <motion.h3
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5 }}
+                  whileHover={{
+                    scale: 1.1,
+                    color: "#D32F2F",
+                    transition: { duration: 0.3 },
+                  }}
+                  style={{ cursor: "pointer", color: "black" }}
+                >
+                  MyToDo
+                </motion.h3>
+              </Link>
+            </div>
+          )}
         </Grid>
       </Grid>
     </Container>

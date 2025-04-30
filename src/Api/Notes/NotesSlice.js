@@ -57,7 +57,12 @@ const notesSlice = createSlice({
                 state.completedNoteError = null;
             })
             .addCase(completedNoteThunk.fulfilled, (state, action) => {
-                state.completedNoteStatus = 'succeeded';
+                state.completedNoteStatus = "succeeded";
+                const updatedNote= action.payload;
+                state.notes = state.notes.map((note) =>
+                    note._id === updatedNote._id ? { ...note, ...updatedNote } : note
+                );
+
             })
             .addCase(completedNoteThunk.rejected, (state, action) => {
                 state.completedNoteStatus = 'failed';

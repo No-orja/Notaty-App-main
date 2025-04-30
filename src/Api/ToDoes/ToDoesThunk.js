@@ -30,9 +30,9 @@ export const addTodoThunk = createAsyncThunk(
 
 export const updateToDoesThunk = createAsyncThunk(
     'Todo/updateTodo', 
-    async ({id, task, isCompleted}, { rejectWithValue }) => {
+    async ({id, task}, { rejectWithValue }) => {
         try {
-            const response = await ToDoesApi.UpdateTODoesApi(id, task, isCompleted); 
+            const response = await ToDoesApi.UpdateTODoesApi(id, task); 
             console.log("The response for update To-Dos:", response);
             return response;
         } catch (e) {
@@ -54,6 +54,20 @@ export const getSpecificTodoThunk = createAsyncThunk(
             return rejectWithValue(e.message); 
         }
     }
+);
+
+export const toggleCompletedToDoesThunk = createAsyncThunk(
+    'Todo/toggleCompletedTodo', 
+    async (id, { rejectWithValue }) => {
+        try {
+            const response = await ToDoesApi.toggleCompletedTODoesApi(id); 
+            console.log("The response for update To-Dos:", response);
+            return response;
+        } catch (e) {
+            console.error("Error fetching To-Dos:", e);
+            return rejectWithValue(e.message); 
+        }
+    }   
 );
 
 export const deleteToDoesThunk = createAsyncThunk(

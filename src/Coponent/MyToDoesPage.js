@@ -90,7 +90,7 @@ export default function MyToDos() {
       <div className="NotesContainer">
         <div style={{ padding: '1rem', borderRadius: '10px', textAlign: 'center' }}>
           <Grid container spacing={2}>
-            <Grid item xs={8}>
+            <Grid item xs={12} sm={8}>
               <input
                 placeholder="Type here..."
                 className="input"
@@ -100,7 +100,7 @@ export default function MyToDos() {
                 type="text"
               />
             </Grid>
-            <Grid item xs={4}>
+            <Grid item xs={12} sm={4}>
               <button className="icon-btn" onClick={handleSaveCreateTodo}>
                 <div>Add TODO</div>
               </button>
@@ -181,6 +181,7 @@ export default function MyToDos() {
           {snackbarMessage}
         </MuiAlert>
       </Snackbar>
+      
     </Container>
   );
 }

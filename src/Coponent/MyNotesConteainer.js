@@ -59,6 +59,7 @@ export default function MyNotesContainer({title, content, completed, id}) {
             showSnackbar(error, "error");
         });
     };
+    
     // Delete logic
     const handleDeleteToDo = async () => {
         console.log("Deleting note..."); 
@@ -76,15 +77,9 @@ export default function MyNotesContainer({title, content, completed, id}) {
     };
 
     // Complete logic
-    console.log("pefore",isCompleted)
-    const handleCompleteToDo = async () => {
-        try {
-            await dispatch(completedNoteThunk(id));
-            dispatch(getAllNoteThunk());
-            setIsCompleted(!isCompleted);
-        } catch (error) {
-            console.log("Error updating note:", error);
-        }
+    const handleCompleteNote = async () => {
+        setIsCompleted(!isCompleted);
+        dispatch(completedNoteThunk(id))
     };
 
     const style = {
@@ -195,7 +190,7 @@ export default function MyNotesContainer({title, content, completed, id}) {
                 alignItems="center"
                 justifyContent="center"
             >
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={6}>
                     <Typography 
                         variant="h6" 
                         gutterBottom
@@ -208,10 +203,10 @@ export default function MyNotesContainer({title, content, completed, id}) {
                 {/* Control icons */}
                 <Grid 
                     item 
-                    xs={6} 
+                    xs={12} sm={6}
                     sx={{ display: "flex", justifyContent: "center", gap: "10px" }}
                 >
-                    <IconButton color={isCompleted ? "success" : "default"} onClick={handleCompleteToDo}>
+                    <IconButton color={isCompleted ? "success" : "default"} onClick={handleCompleteNote}>
                         {isCompleted ? <CheckCircle /> : <CheckCircleOutline />}
                     </IconButton>
                     <IconButton color="primary" onClick={handleOpenEdit}>
@@ -222,7 +217,7 @@ export default function MyNotesContainer({title, content, completed, id}) {
                     </IconButton>
                 </Grid>
 
-                <Grid item xs={6}>   
+                <Grid item xs={12} sm={6}>   
                     <Accordion sx={{ border: "3px solid #877575", borderRadius: "8px", boxShadow: 3 }}>
                         <AccordionSummary
                             expandIcon={<ExpandMoreIcon />}

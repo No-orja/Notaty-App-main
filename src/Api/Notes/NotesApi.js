@@ -51,7 +51,7 @@ export const deleteNotesApi = async (id) => {
 };
 export const completedNotesApi = async (id) => {
     try {
-        const response = await BaseUrl.put(`/notes/${id}`);
+        const response = await BaseUrl.patch(`/notes/${id}/toggle-complete`);
         return response.data;
     } catch (e) {
         console.error("Error updating note:", e);

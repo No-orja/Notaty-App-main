@@ -1,17 +1,22 @@
-//all Todos selector
-export const selectToDoes = (state) => state.todos.todos;
-export const selectGetAllTodosStatus = (state) => state.todos.getAllToDoesStatus;
-export const selectGetAllTodosError = (state) => state.todos.getAllToDoesError;
+// all Todos selector
+export const selectToDoes = state => state.todos.todos;
 
-//Update Todo selector
-export const selectUpdateToDoesStatus = (state) => state.todos.updateToDoesStatus;
-export const selectUpdateToDoesError = (state) => state.todos.updateToDoesError;
+// Get All Todos
+export const selectGetAllTodosStatus = state => state.todos.getAllToDoesStatus;
+export const selectGetAllTodosError  = state => state.todos.getAllToDoesError;
 
-//Delete Todo selector
-export const selectDeleteToDoesStatus = (state) => state.todos.deleteToDoesStatus;  
-export const selectDeleteToDoesError = (state) => state.todos.deleteToDoesError;
+// Add Todo
+export const selectAddToDoesStatus = state => state.todos.addToDoesStatus;
+export const selectAddToDoesError  = state => state.todos.addToDoesError;
 
-//Add Todo selector
-export const selectAddToDoesStatus = (state) => state.todos.addToDoesStatus;
-export const selectAddToDoesError = (state) => state.todos.addToDoesError;
+// Update Todo
+export const selectUpdateToDoesStatus = state => state.todos.updateToDoesStatus;
+export const selectUpdateToDoesError  = state => state.todos.updateToDoesError;
 
+// Update Todo Completed
+export const selectToggleCompletedToDoesStatus = state => state.todos.toggleCompletedToDoesStatus;
+export const selectToggleCompletedToDoesError  = state => state.todos.toggleCompletedToDoesError;
+
+// Delete Todo
+export const selectDeleteToDoesStatus = state => state.todos.deleteToDoesStatus;
+export const selectDeleteToDoesError  = state => state.todos.deleteToDoesError;
